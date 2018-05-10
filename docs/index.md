@@ -10,6 +10,7 @@ It can be installed with the usual
 
 Consider first an example of using epnurbs::
 
+```
   ###################################################
   # jEPlus supplies the following arguments:
   #   sys.argv[1]  -  project's base folder where the project files are located
@@ -50,5 +51,6 @@ Consider first an example of using epnurbs::
   import epnurbs
 
   epnurbs.createnurbsshading(idd_filename, idf_filename, 'ZidJug', shading_str_top,  actual_ctrl_points_top, evaluated_points=15)
+```
 
 It is assumed here that one is using jEPlus for …
