@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: epnurbs
+Version: 1.0.2a1
+Summary: Create shading with nurbs outer edge in EnergyPlus .idf/.imf files
+Home-page: UNKNOWN
+Author: Sanja Stevanovic & Dragan Stevanovic
+Author-email: dragance106@yahoo.com
+License: UNKNOWN
+Description: # epnurbs
+        
+        This package contains a few methods that enable one to add shading surfaces for walls directly in EnergyPlus .idf/.imf file. Methods rely on *eppy* to manage .idf files and *NURBS-Python* to create nurbs curves.
+        
+        
+Keywords: eppy geomdl PYTHON-Nurbs shading nurbs
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Description-Content-Type: text/markdown
