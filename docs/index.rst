@@ -1,14 +1,5 @@
-.. epnurbs documentation master file, created by
-   sphinx-quickstart on Thu May 10 22:02:25 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to epnurbs's documentation!
 ===================================
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
 epnurbs package serves to create shading surfaces with nurbs outer edge in EnergyPlus .idf/.imf files.
 It relies on *eppy* package to handle .idf/.imf files and 
