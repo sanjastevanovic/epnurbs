@@ -1,0 +1,140 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to epnurbs’s documentation! &#8212; epnurbs v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-epnurbs-s-documentation">
+<h1>Welcome to epnurbs’s documentation!<a class="headerlink" href="#welcome-to-epnurbs-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>epnurbs package serves to create shading surfaces with nurbs outer edge in EnergyPlus .idf/.imf files.
+It relies on <em>eppy</em> package to handle .idf/.imf files and
+<em>NURBS-Python</em> to create points on a nurbs curve.
+It can be installed with the usual</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">epnurbs</span></code></div></blockquote>
+<p>Consider first an example of using epnurbs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">###################################################</span>
+<span class="c1"># jEPlus supplies the following arguments:</span>
+<span class="c1">#   sys.argv[1]  -  project&#39;s base folder where the project files are located</span>
+<span class="c1">#   sys.argv[2]  -  output folder of the project where the RunTimes.csv is located</span>
+<span class="c1">#   sys.argv[3]  -  Other arguments specified in the parameter definition. They are passed in as a &#39;,&#39; delimitted string</span>
+<span class="c1">#   sys.argv[4]  -  folder of the binary files of the simulation program, e.g. the location of Energy+.idd</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># path to E+ idd file, required by eppy</span>
+<span class="n">idd_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;Energy+.idd&#39;</span><span class="p">)</span>
+
+<span class="c1"># path to idf input file within each simulated folder</span>
+<span class="n">idf_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;in.idf&#39;</span><span class="p">)</span>
+
+<span class="c1">###################################################</span>
+<span class="c1"># idf template for shading elements</span>
+<span class="n">shading_str_top</span>  <span class="o">=</span> <span class="s1">&#39;Shading:Zone:Detailed, ShadingTop&lt;IDX&gt;, &lt;BASESURFACE&gt;, , , &lt;VERTICES&gt;;&#39;</span>
+
+<span class="c1"># alternative values for NURBS control points</span>
+<span class="n">start_values</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">],</span>
+               <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">],</span>
+               <span class="p">[</span><span class="mf">3.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]</span> <span class="p">]</span>
+<span class="n">ctrl_point_alternatives</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span> <span class="p">[</span><span class="n">start_values</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">start_values</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">j</span><span class="p">,</span> <span class="n">start_values</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]]</span>
+                               <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)]</span>
+                             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">start_values</span><span class="p">))]</span>
+
+<span class="c1"># parse the jEPlus parameters from sys.argv[3]</span>
+<span class="n">param</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+<span class="c1"># param[0], param[1], ... are strings representing control point indices from ctrl_point_alternatives list</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">param</span><span class="p">))]</span>
+<span class="n">actual_ctrl_points_top</span>  <span class="o">=</span> <span class="p">[</span><span class="n">ctrl_point_alternatives</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">)]</span>
+
+<span class="c1">###################################################</span>
+<span class="c1"># call the appropriate epnurbs method</span>
+<span class="kn">import</span> <span class="nn">epnurbs</span>
+
+<span class="n">epnurbs</span><span class="o">.</span><span class="n">createnurbsshading</span><span class="p">(</span><span class="n">idd_filename</span><span class="p">,</span> <span class="n">idf_filename</span><span class="p">,</span> <span class="s1">&#39;ZidJug&#39;</span><span class="p">,</span> <span class="n">shading_str_top</span><span class="p">,</span>  <span class="n">actual_ctrl_points_top</span><span class="p">,</span> <span class="n">evaluated_points</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is assumed here that one is using jEPlus for …</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Sanja Stevanovic & Dragan Stevanovic.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
